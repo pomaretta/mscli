@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+  ftpd_server:
+    image: stilliard/pure-ftpd:hardened
+    container_name: mscli-ftp
+    ports:
+      - "21:21"
+      - "30000-30009:30000-30009"
+    volumes:
+      - "./ftp-data:/home/one"
+    environment:
+      PUBLICHOST: "localhost"
+      FTP_USER_NAME: one
+      FTP_USER_PASS: 1234
+      FTP_USER_HOME: /home/one

@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  sftp_server:
+    image: atmoz/sftp
+    container_name: mscli-sftp
+    ports:
+      - "22222:22"
+    volumes:
+      - /Users/pomaretta/.ssh/carlos_pomares.pub:/home/one/.ssh/keys/id_rsa.pub:ro
+      - "./sftp-data:/home/one"
+    command: one::1001
