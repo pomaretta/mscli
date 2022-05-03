@@ -37,3 +37,6 @@ class Properties(JSONData):
     def save(self, output_file: str):
         pass
 
+    @abstractmethod
+    def to_dict(self):
+        pass

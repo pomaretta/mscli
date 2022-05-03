@@ -79,14 +79,14 @@ class Properties1122(Properties):
     view_distance = 10
     motd = "A Minecraft Server"
 
-    def __init__(self, json_data):
+    def __init__(self, json_data: dict = None):
         super().__init__(json_data)
         self.__load_properties__()
 
     def __load_properties__(self, json_data: dict = None):
+        if json_data == None:
+            return
         data = self.json_data
-        if json_data is not None:
-            data = json_data
         for k, value in data.items():
             k = k.replace("-", "_")
             setattr(self, k, value)
@@ -118,6 +118,19 @@ class Properties1122(Properties):
                     d
                 )
             file.close()
+
+    def to_dict(self):
+        out = {}
+        for property in self._available_properties:
+            v = getattr(self, property)
+            if isinstance(v, bool):
+                v = "true" if v else "false"
+            if v == None:
+                v = ""
+            if property == "motd":
+                v = v.encode('utf-8').decode('utf-8')
+            out[property.replace('_', '-').replace('_d_', '.')] = v
+        return out
 
 class Properties118(Properties):
     
@@ -224,14 +237,14 @@ class Properties118(Properties):
     spawn_protection = 16
     max_world_size = 29999984
 
-    def __init__(self, json_data):
+    def __init__(self, json_data: dict = None):
         super().__init__(json_data)
         self.__load_properties__()
 
     def __load_properties__(self, json_data: dict = None):
+        if json_data == None:
+            return
         data = self.json_data
-        if json_data is not None:
-            data = json_data
         for k, value in data.items():
             k = k.replace("-", "_").replace(".", "_d_")
             setattr(self, k, value)
@@ -263,3 +276,16 @@ class Properties118(Properties):
                     d
                 )
             file.close()
+
+    def to_dict(self):
+        out = {}
+        for property in self._available_properties:
+            v = getattr(self, property)
+            if isinstance(v, bool):
+                v = "true" if v else "false"
+            if v == None:
+                v = ""
+            if property == "motd":
+                v = v.encode('utf-8').decode('utf-8')
+            out[property.replace('_', '-').replace('_d_', '.')] = v
+        return out

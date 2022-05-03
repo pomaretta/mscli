@@ -43,7 +43,10 @@ class AddToRegistry(Stage):
             path=path,
             lastmodified=config_data["lastmodified"],
             creation=config_data["createdat"],
-            extra=config_data["extra"]
+            extra={
+                **config_data["extra"],
+                "properties": self.builder.server.get_properties().to_dict() if self.builder.server.get_properties() is not None else {},
+            }
         )
 
         registry.add(registry_object)

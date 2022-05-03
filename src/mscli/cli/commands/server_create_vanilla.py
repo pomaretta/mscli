@@ -111,27 +111,6 @@ def main(
     if args.world.lower() == "none":
         args.world = None
 
-    # Parse properties
-    properties = None
-    if args.properties is not None:
-        if version_name == "1.12.2":
-            properties = Properties1122(
-                json_data=Properties1122.load(args.properties).json_data
-            )
-        elif version_name == "1.18":
-            properties = Properties118(
-                json_data=Properties118.load(args.properties).json_data
-            )
-        else:
-            print("[!] No properties support for this version.")
-            return True
-
-    server = VanillaServer(
-        properties=properties,
-        icon=args.icon,
-        world=args.world,
-    )
-
     provider = None
     for v in version.get_versions():
         if v.name == version_name:
@@ -141,16 +120,6 @@ def main(
     if provider is None:
         print("[!] Could not find the version.")
         return True
-    
-    builder = VanillaBuilder(
-        configuration=configuration,
-        credentials=credentials,
-        registry=registry,
-        provider=provider,
-        server=server
-    )
-
-    print("[+] Creating server...")
 
     version_exists = False
     for v in jvm.get_versions():
@@ -160,6 +129,36 @@ def main(
     if not version_exists:
         print("[!] Could not find the version on JVMs.")
         return True
+
+    # Parse properties
+    properties = None
+    if version_name == "1.12.2":
+        properties = Properties1122(
+            json_data=Properties1122.load(args.properties).json_data if args.properties is not None else None
+        )
+    elif version_name == "1.18":
+        properties = Properties118(
+            json_data=Properties118.load(args.properties).json_data if args.properties is not None else None
+        )
+    else:
+        print("[!] No properties support for this version.")
+        return True
+
+    server = VanillaServer(
+        properties=properties,
+        icon=args.icon,
+        world=args.world,
+    )
+
+    builder = VanillaBuilder(
+        configuration=configuration,
+        credentials=credentials,
+        registry=registry,
+        provider=provider,
+        server=server
+    )
+
+    print("[+] Creating server...")
 
     # Check if the version exists on the configuration
     jvm_provider: dict = configuration.get_jvms()['liberica']

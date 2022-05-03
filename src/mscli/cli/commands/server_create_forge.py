@@ -122,12 +122,34 @@ def main(
     if args.world.lower() == "none":
         args.world = None
 
+    provider = None
+    for v in version.get_versions():
+        if v.name == version_name:
+            provider = v.get_provider('forge')
+            break
+
+    if provider is None:
+        print("[!] Could not find the version.")
+        return True
+
+    version_exists = False
+    for v in jvm.get_versions():
+        if v.name == provider.jvm:
+            version_exists = True
+            break
+    if not version_exists:
+        print("[!] Could not find the version on JVMs.")
+        return True
+
     # Parse properties
     properties = None
-    if args.properties is not None:
+    if version_name == "1.12.2":
         properties = Properties1122(
-            json_data=Properties1122.load(args.properties).json_data
+            json_data=Properties1122.load(args.properties).json_data if args.properties is not None else None
         )
+    else:
+        print("[!] No properties support for this version.")
+        return True
 
     mods = None
     if args.mods is not None:
@@ -142,16 +164,7 @@ def main(
         mods=mods
     )
 
-    provider = None
-    for v in version.get_versions():
-        if v.name == version_name:
-            provider = v.get_provider('forge')
-            break
 
-    if provider is None:
-        print("[!] Could not find the version.")
-        return True
-    
     builder = ForgeBuilder(
         configuration=configuration,
         credentials=credentials,
@@ -162,14 +175,7 @@ def main(
 
     print("[+] Creating server...")
 
-    version_exists = False
-    for v in jvm.get_versions():
-        if v.name == provider.jvm:
-            version_exists = True
-            break
-    if not version_exists:
-        print("[!] Could not find the version on JVMs.")
-        return True
+    
 
     # Check if the version exists on the configuration
     jvm_provider: dict = configuration.get_jvms()['liberica']

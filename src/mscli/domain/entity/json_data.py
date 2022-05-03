@@ -5,7 +5,7 @@ import json
 
 class JSONData:
     
-    def __init__(self, json_data):
+    def __init__(self, json_data: dict = None):
         self.json_data = json_data
 
     @abstractmethod
