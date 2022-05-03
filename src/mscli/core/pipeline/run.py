@@ -7,6 +7,7 @@ from mscli.core.configuration.registry import MinecraftRegistry
 
 from ...domain.pipeline.stage import Stage
 from ...domain.builders.builder import MinecraftBuilder
+from ...core.jvm.server import MinecraftServer
 
 class RunMinecraftBinary(Stage):
 
@@ -47,32 +48,41 @@ class RunMinecraftBinary(Stage):
             self._completed = True
             return
 
-        command = f"{jre} -Xmx{self.xmx}M -Xms{self.xms}M -jar {file} nogui"
+        process = subprocess.Popen(
+            args=(
+                jre,
+                # '-Xmx',
+                # f'{self.xmx}M',
+                # '-Xms',
+                # f'{self.xms}M',
+                '-jar',
+                file,
+                'nogui',
+            ),
+            executable=jre,
+            cwd=self.files_path,
+            stdin=subprocess.PIPE,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE
+        )
 
-        # process = self.builder.__create_process__(
-        #     jre,
-        #     # '-Xmx',
-        #     # f'{self.xmx}M',
-        #     # '-Xms',
-        #     # f'{self.xms}M',
-        #     '-jar',
-        #     file,
-        #     'nogui',
-        #     cwd=self.files_path,
-        #     stdin=subprocess.PIPE,
-        #     stdout=subprocess.PIPE,
-        #     # stderr=subprocess.PIPE
-        # )
+        server = MinecraftServer(
+            process=process,
+            configuration=self.builder.configuration,
+            server=self.builder.server
+        )
     
         # self._output.append(process)
-        # self._output.append(f"{jre} -jar {file} nogui")
-        self._output.append(command)
-        self._output.append(self.files_path)
+        self._output.append(server)
+        self._output.append(f"{jre} -jar {file} nogui")
+        # self._output.append(command)
+        # self._output.append(self.files_path)
         if self.output is not None:
             # self.output.append(process)
-            # self.output.append(f"{jre} -jar {file} nogui")
-            self.output.append(command)
-            self.output.append(self.files_path)
+            self.output.append(server)
+            self.output.append(f"{jre} -jar {file} nogui")
+            # self.output.append(command)
+            # self.output.append(self.files_path)
         self._completed = True
         return
 

@@ -1,7 +1,7 @@
 __command__ = "server_run"
 
 import os
-import time
+import threading
 
 from typing import Optional, List
 from mscli.core.jvm.jvm import MinecraftJVM
@@ -13,6 +13,7 @@ from mscli.domain.versions.version import Versions
 from mscli.core.builder.forge import ForgeBuilder
 from mscli.core.builder.vanilla import VanillaBuilder
 from mscli.core.configuration.registry import MinecraftRegistry
+from mscli.core.jvm.server import MinecraftServer
 
 from subprocess import Popen
 from argparse import ArgumentParser
@@ -152,42 +153,37 @@ def main(
         print("[!] Failed to run server.")
         return True
 
-    command = pipeline._output[0]
-    path = pipeline._output[1]
-    old_cwd = os.getcwd()
+    server: MinecraftServer
+    server = pipeline._output[0]
 
-    os.chdir(path)
-
-    try:
-        os.system(command)
-    except KeyboardInterrupt:
-        pass
+    thread = threading.Thread(
+        target=print_output,
+        args=[server]
+    )
+    thread.start()
     
-    os.chdir(old_cwd)
+    while server.is_running():
+        try:
+            command = input()
+        except KeyboardInterrupt:
+            server.kill()
+            break
+        if command is None:
+            continue
+        server.send(command)
 
-    # process: Popen
-    # process = pipeline._output[0]
-
-    # exit_code = None
-    # exit = False
-    # while not exit:
-    #     readable = True
-    #     while process.stdout.readable():
-    #         line = process.stdout.readline()
-    #         print(line.decode('utf-8'))
-    #         print(f"[*] Server running. {process.stdout.readable()}")
-
-    #     print(f"MS {configuration.get_ip()}@{id} $ ", end='')
-    #     command = input()
-    #     if command == "exit" or command == "stop":
-    #         process.stdin.write(command.encode('utf-8'))
-    #         process.stdin.flush()
-    #         process.kill()
-    #         exit = True
-    #     process.stdin.write(command.encode())
-    #     process.stdin.flush()
+    server.process.kill()
+    server.process.terminate()
+    print(f"[!] Server {id} killed with exit code {server.process.returncode}.")
 
     # TODO: Update cloud files.
     builder.postrun(id=id)
 
     return True
+
+def print_output(server: MinecraftServer):
+    while server.is_running():
+        line = server.process.stdout.readline()
+        if line is None:
+            continue
+        print(line.decode('utf-8'), end='')

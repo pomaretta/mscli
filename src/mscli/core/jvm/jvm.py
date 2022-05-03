@@ -1,5 +1,4 @@
 import logging
-from posixpath import join
 import shutil
 import os
 
