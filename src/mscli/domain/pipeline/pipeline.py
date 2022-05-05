@@ -20,6 +20,9 @@ class Pipeline:
             stage: Stage
             yield stage._logger
 
+    def get_output(self) -> list:
+        return self._output
+
     def run(self) -> bool:
         for stage in self.stages:
             stage: Stage

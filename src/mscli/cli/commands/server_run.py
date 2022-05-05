@@ -1,6 +1,5 @@
 __command__ = "server_run"
 
-import os
 import threading
 
 from typing import Optional, List
@@ -15,7 +14,6 @@ from mscli.core.builder.vanilla import VanillaBuilder
 from mscli.core.configuration.registry import MinecraftRegistry
 from mscli.core.jvm.server import MinecraftServer
 
-from subprocess import Popen
 from argparse import ArgumentParser
 
 def main(

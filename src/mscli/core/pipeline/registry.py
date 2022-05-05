@@ -1,4 +1,3 @@
-import subprocess
 import logging
 import json
 import os
@@ -6,7 +5,8 @@ import os
 from ...domain.pipeline.stage import Stage
 from ...domain.configuration.registry import RegistryObject
 from ...core.configuration.registry import MinecraftRegistry
-from datetime import date, datetime
+from ...core.jvm.server import MinecraftServer
+from datetime import datetime
 
 class AddToRegistry(Stage):
 
@@ -114,13 +114,13 @@ class RunUpdateRegistry(Stage):
     def run(self):
 
         # Get the process
-        proc: subprocess.Popen = None
+        server: MinecraftServer = None
         if self.pipeline.get_output() is not None and len(self.pipeline.get_output()) > 0:
-            proc = self.pipeline.get_output()[0] 
+            server = self.pipeline.get_output()[0] 
 
         self.registry_object.running = self.running
         self.registry_object.lastmodified = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        self.registry_object.pid = proc.pid if proc is not None else None
+        self.registry_object.pid = server.process.pid if server is not None else None
 
         self.builder.registry.update(self.registry_object)
         self._completed = True

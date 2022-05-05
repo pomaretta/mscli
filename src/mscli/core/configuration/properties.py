@@ -111,9 +111,9 @@ class Properties1122(Properties):
                     v = "true" if v else "false"
                 if v == None:
                     v = ""
-                d = f"{property.replace('_', '-').replace('_d_', '.')}={v}\n"
                 if property == "motd":
-                    d = f"{property.replace('_', '-').replace('_d_', '.')}={repr(v.encode('utf-8'))}\n"
+                    v = v.encode('utf-8').decode('utf-8')
+                d = f"{property.replace('_', '-').replace('_d_', '.')}={v}\n"
                 file.write(
                     d
                 )

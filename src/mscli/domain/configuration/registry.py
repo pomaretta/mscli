@@ -49,8 +49,8 @@ class RegistryObject:
             "update": self.update,
             "creation": self.creation,
             "lastmodified": self.lastmodified,
+            "pid": self.pid,
             "extra": self.extra,
-            "pid": self.pid
         }
 
 class Registry(JSONData):

@@ -1,12 +1,9 @@
 __command__ = "start"
 
-import os
-import sys
 import threading
 import time
 
 from typing import Optional, List
-from queue import SimpleQueue
 from mscli.core.jvm.jvm import MinecraftJVM
 
 from mscli.domain.credentials.credentials import Credentials
@@ -17,8 +14,6 @@ from mscli.core.builder.forge import ForgeBuilder
 from mscli.core.builder.vanilla import VanillaBuilder
 from mscli.core.configuration.registry import MinecraftRegistry
 from mscli.core.jvm.server import MinecraftServer
-
-from ..cmd import MSCLIPrompt
 
 from argparse import ArgumentParser
 
