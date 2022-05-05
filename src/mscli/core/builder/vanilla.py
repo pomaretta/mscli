@@ -36,7 +36,8 @@ class VanillaBuilder(MinecraftBuilder):
 
         pipeline = Pipeline(
             pipeline_id='vanilla-run-pipeline',
-            name='Vanilla Run Pipeline'
+            name='Vanilla Run Pipeline',
+            stages=[]
         )
 
         # Set the id
@@ -157,7 +158,8 @@ class VanillaBuilder(MinecraftBuilder):
         
         pipeline = Pipeline(
             pipeline_id='vanilla-postrun-pipeline',
-            name='Vanilla Postrun Pipeline'
+            name='Vanilla Postrun Pipeline',
+            stages=[]
         )
 
         # Set the id
@@ -251,11 +253,14 @@ class VanillaBuilder(MinecraftBuilder):
 
         pipeline.run()
 
+        return pipeline
+
     def import_server(self, registry_object: RegistryObject):
         
         pipeline = Pipeline(
             pipeline_id='vanilla-import-pipeline',
-            name='Vanilla Import Pipeline'
+            name='Vanilla Import Pipeline',
+            stages=[]
         )
 
         # Set the id
@@ -374,7 +379,8 @@ class VanillaBuilder(MinecraftBuilder):
         
         pipeline = Pipeline(
             pipeline_id='vanilla-update',
-            name='Vanilla Update'
+            name='Vanilla Update',
+            stages=[]
         )
 
         # Set the ID
@@ -494,7 +500,8 @@ class VanillaBuilder(MinecraftBuilder):
         
         pipeline = Pipeline(
             pipeline_id='vanilla-create-pipeline',
-            name='Vanilla Create Pipeline'
+            name='Vanilla Create Pipeline',
+            stages=[]
         )
 
         id = hashlib.md5(f"{self.provider.name}{self.provider.version}{datetime.now().isoformat()}".encode()).hexdigest()

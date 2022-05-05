@@ -35,7 +35,8 @@ class ForgeBuilder(MinecraftBuilder):
         
         pipeline = Pipeline(
             pipeline_id='forge-run-pipeline',
-            name='Forge Run Pipeline'
+            name='Forge Run Pipeline',
+            stages=[]
         )
 
         # Set the id
@@ -155,7 +156,8 @@ class ForgeBuilder(MinecraftBuilder):
 
         pipeline = Pipeline(
             pipeline_id='forge-postrun-pipeline',
-            name='Forge Postrun Pipeline'
+            name='Forge Postrun Pipeline',
+            stages=[]
         )
 
         # Set the id
@@ -249,11 +251,14 @@ class ForgeBuilder(MinecraftBuilder):
 
         pipeline.run()
 
+        return pipeline
+
     def import_server(self, registry_object: RegistryObject):
         
         pipeline = Pipeline(
             pipeline_id='forge-import-pipeline',
-            name='Forge Import Pipeline'
+            name='Forge Import Pipeline',
+            stages=[]
         )
 
         # Set the id
@@ -373,6 +378,7 @@ class ForgeBuilder(MinecraftBuilder):
         pipeline = Pipeline(
             pipeline_id='forge-update-pipeline',
             name='Forge Update Pipeline',
+            stages=[]
         )
 
         # Set the id
@@ -492,7 +498,8 @@ class ForgeBuilder(MinecraftBuilder):
         
         pipeline = Pipeline(
             pipeline_id='forge-create-pipeline',
-            name='Forge Create Pipeline'
+            name='Forge Create Pipeline',
+            stages=[]
         )
 
         id = hashlib.md5(f"{self.provider.name}{self.provider.version}{datetime.now().isoformat()}".encode()).hexdigest()
