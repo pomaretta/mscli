@@ -20,6 +20,9 @@ class Stage:
         """
         self._logger.log(level, f"{self.name}[{self.stage_id}]: {message}", *args)
 
+    def __set_pipeline__(self, pipeline): 
+        self.pipeline = pipeline
+
     def failed(self) -> bool:
         """
         Returns whether the stage failed.

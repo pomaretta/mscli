@@ -21,7 +21,8 @@ class RegistryObject:
         update: bool = False,
         creation: datetime = datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
         lastmodified: datetime = datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-        extra: dict = {}
+        extra: dict = {},
+        pid: int = None
     ):
         self.id = id
         self.ip = ip
@@ -34,6 +35,7 @@ class RegistryObject:
         self.creation = creation
         self.lastmodified = lastmodified
         self.extra = extra
+        self.pid = pid
 
     def to_json(self):
         return {
@@ -47,7 +49,8 @@ class RegistryObject:
             "update": self.update,
             "creation": self.creation,
             "lastmodified": self.lastmodified,
-            "extra": self.extra
+            "extra": self.extra,
+            "pid": self.pid
         }
 
 class Registry(JSONData):

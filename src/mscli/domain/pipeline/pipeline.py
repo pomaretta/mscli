@@ -12,6 +12,7 @@ class Pipeline:
         self._output = []
     
     def add_stage(self, stage: Stage):
+        stage.__set_pipeline__(self)
         self.stages.append(stage)
 
     def get_logs(self) -> Logger:

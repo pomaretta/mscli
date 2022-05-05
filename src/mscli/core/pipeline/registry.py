@@ -1,3 +1,4 @@
+import subprocess
 import logging
 import json
 import os
@@ -112,8 +113,14 @@ class RunUpdateRegistry(Stage):
 
     def run(self):
 
+        # Get the process
+        proc: subprocess.Popen = None
+        if self.pipeline.get_output() is not None and len(self.pipeline.get_output()) > 0:
+            proc = self.pipeline.get_output()[0] 
+
         self.registry_object.running = self.running
         self.registry_object.lastmodified = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        self.registry_object.pid = proc.pid if proc is not None else None
 
         self.builder.registry.update(self.registry_object)
         self._completed = True
