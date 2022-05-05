@@ -49,15 +49,19 @@ class MinecraftBuilder:
             self.__create_directory__(path)
 
     @abstractmethod
-    def run(self) -> Pipeline:
+    def run(self, id: str) -> Pipeline:
         pass
 
     @abstractmethod
-    def postrun(self):
+    def postrun(self, id: str):
         pass
 
     @abstractmethod
-    def update(self):
+    def import_server(self, registry_object):
+        pass
+
+    @abstractmethod
+    def update(self, registry_object):
         pass
 
     @abstractmethod
