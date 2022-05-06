@@ -131,3 +131,5 @@ dmypy.json
 
 scripts/sftp-data
 scripts/ftp-data
+
+.DS_Store

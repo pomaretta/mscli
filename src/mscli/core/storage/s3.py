@@ -41,7 +41,7 @@ class S3Storage(Storage):
         )
 
         s3 = sess.resource('s3')
-        aws_key = f"{prefix if prefix is not None or prefix is not '' else ''}/{self.provider.name}/{self.provider.version}/{self.id}"
+        aws_key = f"{prefix if prefix is not None or prefix != '' else ''}/{self.provider.name}/{self.provider.version}/{self.id}"
 
         # Upload compressed file
         aws_compressed_key = f"{aws_key}/{self.compressed_name}"
@@ -73,7 +73,7 @@ class S3Storage(Storage):
         )
 
         s3 = sess.resource('s3')
-        aws_key = f"{prefix if prefix is not None or prefix is not '' else ''}/{self.provider.name}/{self.provider.version}/{self.id}"
+        aws_key = f"{prefix if prefix is not None or prefix != '' else ''}/{self.provider.name}/{self.provider.version}/{self.id}"
 
         # Upload configuration file
         aws_configuration_key = f"{aws_key}/{self.configuration_name}"
@@ -98,7 +98,7 @@ class S3Storage(Storage):
         )
 
         s3 = sess.resource('s3')
-        aws_key = f"{prefix if prefix is not None or prefix is not '' else ''}/{self.provider.name}/{self.provider.version}/{self.id}"
+        aws_key = f"{prefix if prefix is not None or prefix != '' else ''}/{self.provider.name}/{self.provider.version}/{self.id}"
 
         # Upload compressed file
         aws_compressed_key = f"{aws_key}/{self.compressed_name}"
@@ -124,7 +124,7 @@ class S3Storage(Storage):
         )
 
         s3 = sess.resource('s3')
-        aws_key = f"{prefix if prefix is not None or prefix is not '' else ''}/{self.provider.name}/{self.provider.version}/{self.id}"
+        aws_key = f"{prefix if prefix is not None or prefix != '' else ''}/{self.provider.name}/{self.provider.version}/{self.id}"
 
         aws_configuration_key = f"{aws_key}/{self.configuration_name}"
         s3.Bucket(bucket).download_file(aws_configuration_key, settings_output)
