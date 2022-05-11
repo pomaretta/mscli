@@ -42,8 +42,8 @@ class CreateConfig(Stage):
                 "provider": self.builder.provider.name,
                 "version": self.builder.provider.version
             },
-            "lastmodified": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-            "createdat": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            "lastmodified": datetime.utcnow().isoformat(),
+            "createdat": datetime.utcnow().isoformat(),
             "checksum": self.checksum,
             "extra": {
                 "schema": self.builder.credentials.get_schema()
@@ -103,7 +103,7 @@ class UpdateConfigOnRun(Stage):
                 "provider": self.builder.provider.name,
                 "version": self.builder.provider.version
             },
-            "lastmodified": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            "lastmodified": datetime.utcnow().isoformat(),
             "createdat": old_config_data["createdat"],
             "checksum": old_config_data["checksum"],
             "extra": old_config_data["extra"]
@@ -165,7 +165,7 @@ class UpdateConfig(Stage):
                 "provider": self.builder.provider.name,
                 "version": self.builder.provider.version
             },
-            "lastmodified": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            "lastmodified": datetime.utcnow().isoformat(),
             "createdat": old_config_data["createdat"],
             "checksum": self.checksum,
             "extra": old_config_data["extra"]
