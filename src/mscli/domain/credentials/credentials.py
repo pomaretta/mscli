@@ -16,6 +16,7 @@ class Credentials(JSONData):
         return {
             "schema": "aws",
             "aws_access_key_id": self.get_aws_access_key_id(),
+            "aws_secret_access_key": self.get_aws_secret_access_key(),
             "aws_bucket": self.get_aws_bucket(),
             "aws_region": self.get_aws_region(),
             "aws_prefix": self.get_aws_prefix(),
@@ -30,6 +31,7 @@ class Credentials(JSONData):
         return {
             "schema": "ftp",
             "username": self.get_ftp_username(),
+            "password": self.get_ftp_password(),
             "hostname": self.get_ftp_hostname(),
             "port": self.get_ftp_port(),
         }
@@ -43,8 +45,11 @@ class Credentials(JSONData):
         return {
             "schema": "sftp",
             "username": self.get_sftp_username(),
+            "password": self.get_sftp_password(),
             "hostname": self.get_sftp_hostname(),
             "port": self.get_sftp_port(),
+            "private_key": self.get_sftp_private_key(),
+            "private_key_pass": self.get_sftp_private_key_pass(),
         }
 
     def get_aws_access_key_id(self) -> str:
