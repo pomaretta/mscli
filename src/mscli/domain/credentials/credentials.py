@@ -90,7 +90,7 @@ class Credentials(JSONData):
     def get_ftp_hostname(self) -> str:
         if self.__type__()!= "ftp":
             raise Exception("Credentials type is not FTP")
-        return self.json_data["hostname"] + f':{self.json_data["port"]}' if "port" in self.json_data else ""
+        return self.json_data["hostname"]
 
     def get_ftp_port(self) -> int:
         if self.__type__()!= "ftp":
