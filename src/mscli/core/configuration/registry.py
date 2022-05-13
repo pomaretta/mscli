@@ -83,7 +83,12 @@ class MinecraftRegistry(Registry):
             running = False
 
         registry_object.ip = server_ip
-        registry_object.running = running
+
+        # Avoid local override on port don't opened.
+        if registry_object.pid is not None:
+            registry_object.running = registry_object.running
+        else:
+            registry_object.running = running
         self.update(registry_object)
 
     def get(self, registry_id: str) -> RegistryObject:
