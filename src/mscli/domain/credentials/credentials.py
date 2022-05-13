@@ -8,10 +8,15 @@ class Credentials(JSONData):
 
     def __init__(self, json_data: dict = None, configuration_path: str = os.path.expanduser("~/.mscli/config/credentials.json")):
         super().__init__(json_data)
+        if json_data is None:
+            # Initialize with empty data
+            self.json_data = {
+                "profiles": {},
+            }
         self.configuration_path = configuration_path
 
     def __type__(self):
-        if self.profile is None and not self.__profile_exists__(self.profile):
+        if self.profile is not None and self.__profile_exists__(self.profile):
             raise Exception("Profile does not exist")
         return self.json_data["schema"] if self.profile is None else self.json_data["profiles"][self.profile]["schema"]
 
