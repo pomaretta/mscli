@@ -22,7 +22,7 @@ class GetServerSettings(Stage):
         settings_path = os.path.join(
             self.builder.configuration.get_paths()["files"],
             self.builder.provider.get_files().get_tmp(),
-            f"settings_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.json"
+            f"settings_{datetime.utcnow().strftime('%Y-%m-%d_%H-%M-%S')}.json"
         )
 
         try:
@@ -60,7 +60,7 @@ class GetServerFiles(Stage):
         files_path = os.path.join(
             self.builder.configuration.get_paths()["files"],
             self.builder.provider.get_files().get_tmp(),
-            f"files_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.zip"
+            f"files_{datetime.utcnow().strftime('%Y-%m-%d_%H-%M-%S')}.zip"
         )
 
         try:

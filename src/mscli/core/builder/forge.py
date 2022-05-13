@@ -83,6 +83,8 @@ class ForgeBuilder(MinecraftBuilder):
             )   
         )
 
+        registry_lastmodified = []
+
         # Update registry
         pipeline.add_stage(
             RunUpdateRegistry(
@@ -91,7 +93,8 @@ class ForgeBuilder(MinecraftBuilder):
                 name='Forge Registry Update',
                 description='Update the Forge registry',
                 registry_object=registry_object,
-                running=True
+                running=True,
+                output=registry_lastmodified
             )
         )
 
@@ -132,7 +135,8 @@ class ForgeBuilder(MinecraftBuilder):
                 xmx=2048,
                 xms=1024,
                 ip=self.configuration.get_ip(),
-                output=configuration_path
+                input=registry_lastmodified,
+                output=configuration_path,
             )
         )
 

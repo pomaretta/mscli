@@ -32,7 +32,7 @@ class CompressDirectory(Stage):
             self._completed = True
             return False
 
-        yy, mm, dd, HH, MM, ss = datetime.now().strftime("%Y-%m-%d-%H-%M-%S").split("-")
+        yy, mm, dd, HH, MM, ss = datetime.utcnow().strftime("%Y-%m-%d-%H-%M-%S").split("-")
 
         output_compressed = os.path.join(
             self.output_path,

@@ -73,12 +73,13 @@ class CreateConfig(Stage):
 
 class UpdateConfigOnRun(Stage):
 
-    def __init__(self, builder, stage_id: str, name: str, description: str,  id: str, xmx: int, xms: int, ip: str, output: list = None):
+    def __init__(self, builder, stage_id: str, name: str, description: str,  id: str, xmx: int, xms: int, ip: str, input: list = None,output: list = None):
         super().__init__(builder, stage_id, name, description)
         self.id = id
         self.xmx = xmx
         self.xms = xms
         self.ip = ip
+        self.input = input
         self.output = output
 
     def run(self):
@@ -90,6 +91,8 @@ class UpdateConfigOnRun(Stage):
         with open(config_path, "r") as f:
             old_config_data = json.loads(f.read())
             f.close()
+
+        lastmodified = self.input[0]
 
         new_config_data = {
             "id": self.id,
@@ -103,7 +106,7 @@ class UpdateConfigOnRun(Stage):
                 "provider": self.builder.provider.name,
                 "version": self.builder.provider.version
             },
-            "lastmodified": datetime.utcnow().isoformat(),
+            "lastmodified": lastmodified,
             "createdat": old_config_data["createdat"],
             "checksum": old_config_data["checksum"],
             "extra": old_config_data["extra"]

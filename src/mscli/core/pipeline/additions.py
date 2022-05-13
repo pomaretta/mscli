@@ -18,7 +18,7 @@ class AddMods(Stage):
 
         mod_path = os.path.join(
             tmp_folder,
-            f"{mod.name}_{mod.version}_{datetime.now().strftime('%Y%m%d%H%M%S')}.jar"
+            f"{mod.name}_{mod.version}_{datetime.utcnow().strftime('%Y%m%d%H%M%S')}.jar"
         )
 
         # Download mod

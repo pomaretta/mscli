@@ -74,10 +74,9 @@ class AddExistingObjectToRegistry(Stage):
         path = self.local_path[0]
 
         self.existing_object.path = path
-        self.existing_object.lastmodified = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        self.existing_object.lastmodified = datetime.utcnow().isoformat()
 
         registry.add(self.existing_object)
-
         self._completed = True
 
 class UpdateRegistryObject(Stage):
@@ -97,19 +96,19 @@ class UpdateRegistryObject(Stage):
             f.close()
         
         self.existing_object.ip = config_data["ip"]
-        self.existing_object.lastmodified = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        self.existing_object.lastmodified = datetime.utcnow().isoformat()
         self.existing_object.update = False
 
         registry.update(self.existing_object)
-
         self._completed = True
 
 class RunUpdateRegistry(Stage):
 
-    def __init__(self, builder, stage_id: str, name: str, description: str, registry_object: RegistryObject, running: bool):
+    def __init__(self, builder, stage_id: str, name: str, description: str, registry_object: RegistryObject, running: bool, output: list = None):
         super().__init__(builder, stage_id, name, description)
         self.registry_object = registry_object
         self.running = running
+        self.output = output
 
     def run(self):
 
@@ -119,8 +118,11 @@ class RunUpdateRegistry(Stage):
             server = self.pipeline.get_output()[0] 
 
         self.registry_object.running = self.running
-        self.registry_object.lastmodified = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        self.registry_object.lastmodified = datetime.utcnow().isoformat()
         self.registry_object.pid = server.process.pid if server is not None else None
 
         self.builder.registry.update(self.registry_object)
+
+        if self.output:
+            self.output.append(self.registry_object.lastmodified)
         self._completed = True

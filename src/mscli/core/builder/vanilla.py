@@ -109,6 +109,8 @@ class VanillaBuilder(MinecraftBuilder):
             )   
         )
 
+        registry_lastmodified = []
+
         # Update registry
         pipeline.add_stage(
             RunUpdateRegistry(
@@ -117,7 +119,8 @@ class VanillaBuilder(MinecraftBuilder):
                 name='Vanilla Registry Update',
                 description='Update the Vanilla registry',
                 registry_object=registry_object,
-                running=True
+                running=True,
+                output=registry_lastmodified
             )
         )
 
@@ -134,6 +137,7 @@ class VanillaBuilder(MinecraftBuilder):
                 xmx=2048,
                 xms=1024,
                 ip=self.configuration.get_ip(),
+                input=registry_lastmodified,
                 output=configuration_path
             )
         )
@@ -504,7 +508,7 @@ class VanillaBuilder(MinecraftBuilder):
             stages=[]
         )
 
-        id = hashlib.md5(f"{self.provider.name}{self.provider.version}{datetime.now().isoformat()}".encode()).hexdigest()
+        id = hashlib.md5(f"{self.provider.name}{self.provider.version}{datetime.utcnow().isoformat()}".encode()).hexdigest()
         self.provider.get_files().set_id(id)
 
         tmp = os.path.join(self.configuration.get_paths()['files'], self.provider.files.get_tmp())
