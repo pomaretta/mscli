@@ -123,6 +123,9 @@ class RunUpdateRegistry(Stage):
 
         self.builder.registry.update(self.registry_object)
 
-        if self.output:
+        logging.info("Adding %s to output", self.registry_object.lastmodified)
+
+        self._output.append(self.registry_object.lastmodified)
+        if self.output is not None:
             self.output.append(self.registry_object.lastmodified)
         self._completed = True
