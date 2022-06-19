@@ -58,8 +58,8 @@ class CompressDirectory(Stage):
                 with open(os.path.join(root, file), "rb") as f:
                     # NOTE: Add the file to the tarfile
                     tar.addfile(
-                        tarinfo=tarfile.TarInfo(os.path.join(root, file)),
-                        fileobj=f.read()
+                        tarinfo=tar.gettarinfo(name=f.name, arcname=os.path.join(root, file), fileobj=f),
+                        fileobj=f
                     )
         tar.close()
 
