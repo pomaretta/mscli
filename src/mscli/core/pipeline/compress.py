@@ -50,8 +50,10 @@ class CompressDirectory(Stage):
         )
 
         # TODO: Use tarfile to compress the directory
+        cwd = os.getcwd()
         tar = tarfile.open(output_compressed + ".tar.gz", "w:gz")
-        for root, dirs, files in os.walk(directory, topdown=True):
+        os.chdir(directory)
+        for root, dirs, files in os.walk(".", topdown=True):
             dirs[:] = [d for d in dirs if d not in self.exclude_dirs]
             files[:] = [f for f in files if f not in self.exclude_files]
             for file in files:
@@ -62,6 +64,7 @@ class CompressDirectory(Stage):
                         fileobj=f
                     )
         tar.close()
+        os.chdir(cwd)
 
         if not os.path.exists(output_compressed + ".tar.gz"):
             logging.error("Failed to create compressed file")
@@ -75,7 +78,6 @@ class CompressDirectory(Stage):
         with open(output_compressed + ".tar.gz", 'rb') as f:
             data = f.read()
             checksum = hashlib.md5(data).hexdigest()
-            f.close()
 
         self._output.append(output_compressed + ".tar.gz")
         self._output.append(checksum)
